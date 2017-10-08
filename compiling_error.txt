@@ -1,0 +1,11 @@
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0x2d): undefined reference to `cola::insertar(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0x41): undefined reference to `cola::insertar(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0x55): undefined reference to `cola::insertar(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0x62): undefined reference to `cola::imprimir()'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0x91): undefined reference to `pila::push(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0xa5): undefined reference to `pila::push(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0xb9): undefined reference to `pila::push(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0xcd): undefined reference to `pila::push(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0xe1): undefined reference to `pila::push(int)'
+C:\Users\Equipo\AppData\Local\Temp\ccgp6fTW.o:Tarea_Corta2.cpp:(.text+0xee): undefined reference to `pila::imprimir()'
+collect2.exe: error: ld returned 1 exit status

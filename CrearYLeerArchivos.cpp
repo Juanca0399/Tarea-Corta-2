@@ -1,9 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "C:\Users\Equipo\Documents\GitHub\Tarea-Corta-2\CrearYLeerArchivos.hpp"
 using namespace std;
 
-int main() {
+void init() {
   std::ofstream arch1("Arch1.txt");
   std::ofstream arch2("Arch2.txt");
   std::ofstream arch3("Arch3.txt");
@@ -66,6 +67,4 @@ int main() {
 
   cout << "Expresion 1: " << expresion1 << endl << "Expresion 2: " << expresion2 << endl << "Expresion 3: " << expresion3 << endl;
   cout << "Expresion 4: " << expresion4 << endl << "Expresion 5: " << expresion5 << endl;
-
-  return 0;
 }
