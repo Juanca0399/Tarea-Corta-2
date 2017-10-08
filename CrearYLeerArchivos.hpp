@@ -1,4 +1,0 @@
-#ifndef CREARYLEERARCHIVOS_HPP
-#define CREARYLEERARCHIVOS_HPP
-void init();
-#endif
