@@ -73,18 +73,24 @@ void cola::eliminar(){
 void cola::imprimir(){
   string v;
   for(int i = frente;i<fondo+1;i++){
-    v = Cola[i]->valor;
-    cout<<v<<"->";
+    pnodo aux = Cola[i];
+    while(aux != NULL){
+      v = aux->valor;
+      cout<<v<<"->";
+      aux = aux->siguiente;
+    }
   }
 }
 void cola::IngresarExpresion(string expresion){
-  std::stringstream stream(expresion);
-  std::string segment;
-
-  while(std::getline(stream, segment))
-  {
-    pnodo Nodo = new nodo(segment);
-    insertar(Nodo);
+  //separa la expresion y la mete en un nodo que después se ingresa a la cola
+  string v;
+  v = expresion[0];
+  pnodo aux = new nodo(v);
+  insertar(aux);
+  for(std::string::size_type cont = 1; cont < expresion.length();cont++){
+    v = expresion[cont];
+    aux->siguiente = new nodo(v);
+    aux = aux->siguiente;
   }
 }
 
@@ -175,7 +181,6 @@ void CrearArchivos(){
   arch4 << insertar << std::endl;
 
   cout << "Digite la quinta expresion matematica" << endl;
-  cin >> insertar;
   insertar = InputExpresion();
   arch5 << insertar << std::endl;
 }
