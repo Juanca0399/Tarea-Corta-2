@@ -1,11 +1,42 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <string>
+
 using namespace std;
+
+class nodo {
+   public:
+    nodo(string v)
+    {
+       valor = v;
+       siguiente = NULL;
+       anterior = NULL;
+    }
+
+nodo(string v, nodo * signodo)
+    {
+       valor = v;
+       siguiente = signodo;
+    }
+
+   private:
+    string valor;
+    nodo *siguiente;
+    nodo *anterior;
+
+
+   friend class cola;
+};
+
+typedef nodo *pnodo;
 
 class cola{
   private:
     int frente;
     int fondo;
-    int Cola[5];
+    pnodo Cola[5];
   public:
     cola(){
       frente = 0;
@@ -15,15 +46,17 @@ class cola{
       }
     }
     bool ColaVacia(){return fondo <frente;}
-    void insertar(int v);
+    void insertar(pnodo Node);
     void eliminar();
     void imprimir();
+    void IngresarExpresion(string expresion);
+
 };
 
-void cola::insertar(int v){
+void cola::insertar(pnodo Node){
   if(fondo<=5-1){
     fondo++;
-    Cola[fondo] = v;
+    Cola[fondo] = Node;
   }
   else{
     std::cout <<"La cola esta vacia";
@@ -38,8 +71,20 @@ void cola::eliminar(){
   }
 }
 void cola::imprimir(){
+  string v;
   for(int i = frente;i<fondo+1;i++){
-    cout<<Cola[i]<<"->";
+    v = Cola[i]->valor;
+    cout<<v<<"->";
+  }
+}
+void cola::IngresarExpresion(string expresion){
+  std::stringstream stream(expresion);
+  std::string segment;
+
+  while(std::getline(stream, segment))
+  {
+    pnodo Nodo = new nodo(segment);
+    insertar(Nodo);
   }
 }
 
@@ -88,11 +133,71 @@ public:
     }
   }
 
+string InputExpresion(){//pide el input de la expresion y verifica que no tenga letras
+  string insertar;
+  while(true){
+    cin >> insertar;
+    if (std::any_of(std::begin(insertar), std::end(insertar), ::isalpha))
+    {
+      cout<<"Operación no valida"<<endl;
+      cout<<"Ingrese de nuevo la expresion: ";
+    }
+    else{
+      break;
+    }
+  }
+  return insertar;
+}
+
+void CrearArchivos(){
+  std::ofstream arch1("Arch1.txt");
+  std::ofstream arch2("Arch2.txt");
+  std::ofstream arch3("Arch3.txt");
+  std::ofstream arch4("Arch4.txt");
+  std::ofstream arch5("Arch5.txt");
+
+  string insertar;
+
+  cout << "Digite la primera expresion matematica" << endl;
+  insertar = InputExpresion();
+  arch1 << insertar << std::endl;
+
+  cout << "Digite la segunda expresion matematica" << endl;
+  insertar = InputExpresion();
+  arch2 << insertar << std::endl;
+
+  cout << "Digite la tercera expresion matematica" << endl;
+  insertar = InputExpresion();
+  arch3 << insertar << std::endl;
+
+  cout << "Digite la cuarta expresion matematica" << endl;
+  insertar = InputExpresion();
+  arch4 << insertar << std::endl;
+
+  cout << "Digite la quinta expresion matematica" << endl;
+  cin >> insertar;
+  insertar = InputExpresion();
+  arch5 << insertar << std::endl;
+}
+string LeerArchivos(string archivo){
+  string expresion1;
+
+  std::ifstream Archivo(archivo);
+	std::string str1;
+  while (std::getline(Archivo, str1)) {
+    expresion1 = str1;
+  }
+  return expresion1;
+}
+
 int main(){
+  string archivo;
+  string expresion;
+  CrearArchivos();
+  archivo = "Arch1.txt";
+  expresion = LeerArchivos(archivo);
   cola cola;
-  cola.insertar(1);
-  cola.insertar(3);
-  cola.insertar(5);
+  cola.IngresarExpresion(expresion);
   cola.imprimir();
 
   cout << endl;
