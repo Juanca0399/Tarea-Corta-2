@@ -312,8 +312,7 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
               pilaNumeros.push(operador);
 
             }
-          }
-          else{*/
+          }*/
           cout<<"Tope = ";
           cout<<typeid(pilaOperadores.Tope).name()<<endl;
           PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
@@ -322,7 +321,7 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
             pilaOperadores.push(aux->valor);
           else{
             //Aqui va el proceso que sucede cuando PDP >= PFP
-          }
+         }
         }
       }
       aux = aux->siguiente;
