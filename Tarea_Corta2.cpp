@@ -3,6 +3,7 @@
 #include <sstream>
 #include <algorithm>
 #include <string>
+#include <typeinfo>
 using namespace std;
 
 class nodo {
@@ -49,6 +50,10 @@ public:
     void pop ();
     void imprimir ();
     void vaciarPila();
+    string operator[](int Tope){//metodo que define lo que hace el operador "[]",
+    // el metodo tuvo que implementarse porque pilaOperadores.Tope no servia.
+      return Pila[Tope];
+    }
 
     friend class cola;
   };
@@ -76,6 +81,7 @@ class cola{
 
     friend class pila;
 };
+
 
 void cola::insertar(pnodo Node){
   if(fondo<=5-1){
@@ -273,8 +279,9 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
           }
           else{
             cout<<"Tope = ";
-            cout<<pilaOperadores.Tope<<endl;
-            //PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
+            cout<<typeid(pilaOperadores.Tope).name()<<endl;
+            int tope = pilaOperadores.Tope;
+            PDP = validarPDP(pilaOperadores[tope]);
             PFP = validarPFP(aux->valor);
             if (PFP > PDP)
               pilaOperadores.push(aux->valor);
