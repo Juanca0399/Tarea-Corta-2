@@ -79,6 +79,7 @@ void cola::imprimir(){
       cout<<v<<"->";
       aux = aux->siguiente;
     }
+    cout<<endl;
   }
 }
 void cola::IngresarExpresion(string expresion){
@@ -204,6 +205,10 @@ int main(){
   cola cola;
   cola.IngresarExpresion(expresion);
   cola.imprimir();
+  expresion = LeerArchivos("Arch2.txt");
+  cola.IngresarExpresion(expresion);
+  cola.imprimir();
+
 
   cout << endl;
 
