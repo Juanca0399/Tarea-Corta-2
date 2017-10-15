@@ -34,13 +34,13 @@ typedef nodo *pnodo;
 class pila{
 public:
   int Tope;
-  int Pila[5];
+  string Pila[5];
 public:
 
     pila(){
     Tope = -1;
     for (int i = 0; i<5 ; i++){
-      Pila[i] = 0;
+      Pila[i] = "";
       }
     }
 
@@ -49,6 +49,8 @@ public:
     void pop ();
     void imprimir ();
     void vaciarPila();
+
+    friend class cola;
   };
 
 class cola{
@@ -71,6 +73,8 @@ class cola{
     void IngresarExpresion(string expresion);
     void LeerArchivosEInsertarlosEnLaCola();
     void CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores);
+
+    friend class pila;
 };
 
 void cola::insertar(pnodo Node){
@@ -99,6 +103,7 @@ void cola::imprimir(){
       cout<<v<<"->";
       aux = aux->siguiente;
     }
+    cout<<endl;
   }
 }
 void cola::IngresarExpresion(string expresion){
@@ -267,7 +272,9 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
             //Aqui va el proceso que sucede cuando el string es ")"
           }
           else{
-            PDP = validarPDP(pilaOperadores[Tope]);
+            cout<<"Tope = ";
+            cout<<pilaOperadores.Tope<<endl;
+            //PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
             PFP = validarPFP(aux->valor);
             if (PFP > PDP)
               pilaOperadores.push(aux->valor);
@@ -279,6 +286,12 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
       }
       aux = aux->siguiente;
     }
+    cout<<"pilaNumeros:"<<endl;
+    pilaNumeros.imprimir();
+    cout<<endl;
+    cout<<"pilaOperadores:"<<endl;
+    pilaOperadores.imprimir();
+    cout<<endl;
   }
 }
 
@@ -301,6 +314,10 @@ int main(){
   cola cola;
   cola.LeerArchivosEInsertarlosEnLaCola();
   cola.imprimir();
+  pila pilaOperadores;
+  pila pilaNumeros;
+  cout<<"Entro a comparar"<<endl;
+  cola.CompararExpresiones(pilaNumeros,pilaOperadores);
 
   cin.get();
   return 0;
