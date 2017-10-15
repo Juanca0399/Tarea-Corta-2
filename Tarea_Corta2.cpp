@@ -32,16 +32,38 @@ nodo(string v, nodo * signodo)
 
 typedef nodo *pnodo;
 
+class NodoBinario {
+   public:
+
+   string valor;
+   int FB;
+   NodoBinario *Hizq, *Hder, *siguiente, *anterior;
+
+
+    NodoBinario(string str, NodoBinario *der = NULL, NodoBinario *izq = NULL, NodoBinario *sig=NULL, NodoBinario *ant=NULL):
+        Hizq(izq), Hder(der), valor(str), siguiente(sig), anterior(ant), FB(0) {}
+
+
+
+    friend class pila;
+    friend class Binario;
+    friend class cola;
+
+    void InsertaBinario(string str);
+};
+
+typedef NodoBinario *pNodoBinario;
+
 class pila{
 public:
   int Tope;
-  string Pila[5];
+  pNodoBinario Pila[5];
 public:
 
     pila(){
     Tope = -1;
     for (int i = 0; i<5 ; i++){
-      Pila[i] = "";
+      Pila[i] = new NodoBinario("");
       }
     }
 
@@ -52,7 +74,7 @@ public:
     void vaciarPila();
     string operator[](int Tope){//metodo que define lo que hace el operador "[]",
     // el metodo tuvo que implementarse porque pilaOperadores.Tope no servia.
-      return Pila[Tope];
+      return Pila[Tope]->valor;;
     }
 
     friend class cola;
@@ -82,6 +104,15 @@ class cola{
     friend class pila;
 };
 
+
+void PreordenR(NodoBinario* R);
+void InordenR(NodoBinario* R);
+void PostordenR(NodoBinario* R);
+
+void NodoBinario::InsertaBinario(string str)
+{
+
+}
 
 void cola::insertar(pnodo Node){
   if(fondo<=5-1){
@@ -130,7 +161,7 @@ void cola::IngresarExpresion(string expresion){
     if (Tope < (5-1))
     {
       Tope++;
-      Pila[Tope] = v;
+      Pila[Tope]->valor = v;
     }
     else
       cout << "La pila esta llena";
@@ -148,7 +179,7 @@ void cola::IngresarExpresion(string expresion){
   {
     for (int i = Tope; i >= 0; i--)
     {
-      cout << Pila[i] << "->";
+      cout << Pila[i]->valor << "->";
     }
   }
 
@@ -275,13 +306,17 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
           pilaOperadores.push(aux->valor);
         else{
           if (aux->valor == ")"){
-            //Aqui va el proceso que sucede cuando el string es ")"
+            while(pilaOperadores[pilaOperadores.Tope] != "("){
+              string operador;
+              operador = pilaOperadores[pilaOperadores.Tope];
+              pilaNumeros.push(operador);
+
+            }
           }
           else{
             cout<<"Tope = ";
             cout<<typeid(pilaOperadores.Tope).name()<<endl;
-            int tope = pilaOperadores.Tope;
-            PDP = validarPDP(pilaOperadores[tope]);
+            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
             PFP = validarPFP(aux->valor);
             if (PFP > PDP)
               pilaOperadores.push(aux->valor);
