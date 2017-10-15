@@ -57,7 +57,7 @@ typedef NodoBinario *pNodoBinario;
 class pila{
 public:
   int Tope;
-  pNodoBinario Pila[5];
+  pNodoBinario Pila[30];
 public:
 
     pila(){
@@ -305,7 +305,7 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
         if (pilaOperadores.pilaVacia())
           pilaOperadores.push(aux->valor);
         else{
-          if (aux->valor == ")"){
+          /*if (aux->valor == ")"){
             while(pilaOperadores[pilaOperadores.Tope] != "("){
               string operador;
               operador = pilaOperadores[pilaOperadores.Tope];
@@ -313,16 +313,15 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
 
             }
           }
+          else{*/
+          cout<<"Tope = ";
+          cout<<typeid(pilaOperadores.Tope).name()<<endl;
+          PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
+          PFP = validarPFP(aux->valor);
+          if (PFP > PDP)
+            pilaOperadores.push(aux->valor);
           else{
-            cout<<"Tope = ";
-            cout<<typeid(pilaOperadores.Tope).name()<<endl;
-            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
-            PFP = validarPFP(aux->valor);
-            if (PFP > PDP)
-              pilaOperadores.push(aux->valor);
-            else{
-              //Aqui va el proceso que sucede cuando PDP >= PFP
-            }
+            //Aqui va el proceso que sucede cuando PDP >= PFP
           }
         }
       }
