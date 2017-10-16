@@ -12,7 +12,6 @@ class nodo {
     {
        valor = v;
        siguiente = NULL;
-       anterior = NULL;
     }
 
 nodo(string v, nodo * signodo)
@@ -28,6 +27,7 @@ nodo(string v, nodo * signodo)
 
 
    friend class cola;
+   friend class lista;
 };
 
 typedef nodo *pnodo;
@@ -54,6 +54,127 @@ class NodoBinario {
 
 typedef NodoBinario *pNodoBinario;
 
+class lista {
+public:
+	lista() { primero = actual = NULL; }
+	~lista();
+
+	void InsertarFinal(string v);
+	void EliminarFinal();
+	bool ListaVacia() { return primero == NULL; }
+	void Mostrar();
+	void BorrarFinal();
+	int largoLista();
+	void Buscar(string num);
+	void limpiar();
+
+private:
+	pnodo primero;
+	pnodo actual;
+};
+
+lista::~lista()
+{
+	pnodo aux;
+
+	while (primero) {
+		aux = primero;
+		primero = primero->siguiente;
+		delete aux;
+	}
+	actual = NULL;
+}
+
+void lista::InsertarFinal(string v)
+{
+	if (ListaVacia())
+		primero = new nodo(v);
+	else
+	{
+		pnodo  aux = primero;
+		while (aux->siguiente != NULL)
+			aux = aux->siguiente;
+		aux->siguiente = new nodo(v);
+	}
+}
+
+void lista::BorrarFinal()
+{
+	if (ListaVacia()) {
+		cout << "No hay elementos en la lista:" << endl;
+
+	}
+	else {
+		if (primero->siguiente == NULL) {
+			primero = NULL;
+		}
+		else {
+
+			pnodo aux = primero;
+			while (aux->siguiente->siguiente != NULL) {
+				aux = aux->siguiente;
+
+			}
+
+			pnodo temp = aux->siguiente;
+			aux->siguiente = NULL;
+
+
+			delete temp;
+		}
+	}
+}
+int lista::largoLista() {
+	int cont = 0;
+
+	pnodo aux;
+	aux = primero;
+	if (ListaVacia()) {
+		return cont;
+	}
+	else {
+		while (aux != NULL) {
+			aux = aux->siguiente;
+			cont++;
+		}
+		return cont;
+	}
+
+}
+
+
+void lista::Mostrar()
+{
+	nodo *aux;
+
+	aux = primero;
+	while (aux!=NULL) {
+		cout << aux->valor << "-> ";
+		aux = aux->siguiente;
+	}
+	cout << endl;
+}
+void lista::Buscar(string num)
+{
+	pnodo aux = primero;
+	bool flag = false;
+	string n1;
+	while (aux->siguiente != NULL) {
+		n1 = aux->valor;
+		if (n1 == num) {
+			cout << "El numero " << num << " esta en la lista" << endl;
+			flag = true;
+		}
+		aux = aux->siguiente;
+	}
+	if (flag == false) {
+		cout << "El numero " << num << " no esta en la lista" << endl;
+	}
+}
+
+
+
+
 class pila{
 public:
   int Tope;
@@ -72,9 +193,10 @@ public:
     void pop ();
     void imprimir ();
     void vaciarPila();
-    string operator[](int Tope){//metodo que define lo que hace el operador "[]",
+    void CrearArbol(pila &postfijo);
+    pNodoBinario operator[](int Tope){//metodo que define lo que hace el operador "[]",
     // el metodo tuvo que implementarse porque pilaOperadores.Tope no servia.
-      return Pila[Tope]->valor;;
+      return Pila[Tope];
     }
 
     friend class cola;
@@ -310,8 +432,8 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
         else{
           if (aux->valor == ")"){
             //SI el operador es ")" entonces saca todos los operadores y los inserta en pilaNumeros hasta entontrar "(" y luego lo elimina
-            while(pilaOperadores[pilaOperadores.Tope] != "("){
-              topeActual = pilaOperadores[pilaOperadores.Tope];
+            while(pilaOperadores[pilaOperadores.Tope]->valor != "("){
+              topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
               pilaNumeros.push(topeActual);
               pilaOperadores.pop();
             }
@@ -319,13 +441,13 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
           }
           else{
             //Se sacan las prioridades dentro y fuera de la pila
-            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
+            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]->valor);
             PFP = validarPFP(aux->valor);
             if (PFP > PDP)
             //Si la prioridad fuera de la pila es mayor  que la prioridad dentro de la pila
               pilaOperadores.push(aux->valor);
             else{
-              topeActual = pilaOperadores[pilaOperadores.Tope];
+              topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
               pilaNumeros.push(topeActual);
               pilaOperadores.pop();
               pilaOperadores.push(aux->valor);
@@ -336,7 +458,7 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
       aux = aux->siguiente;
       if (aux == NULL){
         while (pilaOperadores.pilaVacia() == false){
-          topeActual = pilaOperadores[pilaOperadores.Tope];
+          topeActual = pilaOperadores[pilaOperadores.Tope]->valor;;
           pilaNumeros.push(topeActual);
           pilaOperadores.pop();
         }
@@ -345,6 +467,10 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
     cout << endl << endl << "postfijo:   ";
     pilaNumeros.imprimir();
   }
+}
+
+void pila::CrearArbol(pila &postfijo){
+  pNodoBinario aux = postfijo[postfijo.Tope];
 }
 
 int main(){
