@@ -62,7 +62,7 @@ public:
 
     pila(){
     Tope = -1;
-    for (int i = 0; i<5 ; i++){
+    for (int i = 0; i<30 ; i++){
       Pila[i] = new NodoBinario("");
       }
     }
@@ -137,7 +137,7 @@ void cola::imprimir(){
     pnodo aux = Cola[i];
     while(aux != NULL){
       v = aux->valor;
-      cout<<v<<"->";
+      cout << v << "->";
       aux = aux->siguiente;
     }
     cout<<endl;
@@ -158,20 +158,20 @@ void cola::IngresarExpresion(string expresion){
 
   void pila::push (string v)
   {
-    if (Tope < (5-1))
+    if (Tope < (30-1))
     {
       Tope++;
       Pila[Tope]->valor = v;
     }
     else
-      cout << "La pila esta llena";
+      cout << "La pila esta llena" << endl;
   }
   void pila::pop (){
     if (!pilaVacia()){
       Tope--;
     }
     else{
-      cout << "La pila esta vacia";
+      cout << "La pila esta vacia" << endl;
     }
   }
 
@@ -292,6 +292,7 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
   //Este metodo (aun no terminafo) va a comparar, en todas las expresiones, sus distintas prioridades y las va a insertar en las pilas
   //NOTA: Al inicio del ciclo for se limbian las pilas enconces cuando se quiera insertar cosas a los arboles se tiene que tomar en cuenta eso
   int PDP, PFP;
+  string topeActual;
   for(int i = frente;i<fondo+1;i++){
     pilaNumeros.vaciarPila();
     pilaOperadores.vaciarPila();
@@ -299,39 +300,50 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
     while(aux != NULL){
       string v = aux->valor;
       if (isdigit(v[0])){
+        //Si el caracter es un numero entonces lo inserta en pilaNumeros
         pilaNumeros.push(v);
       }
       else{
         if (pilaOperadores.pilaVacia())
+        //Si la pila de operadores está vacía entonces lo inserta en pilaOperadores
           pilaOperadores.push(aux->valor);
         else{
-          /*if (aux->valor == ")"){
+          if (aux->valor == ")"){
+            //SI el operador es ")" entonces saca todos los operadores y los inserta en pilaNumeros hasta entontrar "(" y luego lo elimina
             while(pilaOperadores[pilaOperadores.Tope] != "("){
-              string operador;
-              operador = pilaOperadores[pilaOperadores.Tope];
-              pilaNumeros.push(operador);
-
+              topeActual = pilaOperadores[pilaOperadores.Tope];
+              pilaNumeros.push(topeActual);
+              pilaOperadores.pop();
             }
-          }*/
-          cout<<"Tope = ";
-          cout<<typeid(pilaOperadores.Tope).name()<<endl;
-          PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
-          PFP = validarPFP(aux->valor);
-          if (PFP > PDP)
-            pilaOperadores.push(aux->valor);
+            pilaOperadores.pop();
+          }
           else{
-            //Aqui va el proceso que sucede cuando PDP >= PFP
-         }
+            //Se sacan las prioridades dentro y fuera de la pila
+            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]);
+            PFP = validarPFP(aux->valor);
+            if (PFP > PDP)
+            //Si la prioridad fuera de la pila es mayor  que la prioridad dentro de la pila
+              pilaOperadores.push(aux->valor);
+            else{
+              topeActual = pilaOperadores[pilaOperadores.Tope];
+              pilaNumeros.push(topeActual);
+              pilaOperadores.pop();
+              pilaOperadores.push(aux->valor);
+            }
+          }
         }
       }
       aux = aux->siguiente;
+      if (aux == NULL){
+        while (pilaOperadores.pilaVacia() == false){
+          topeActual = pilaOperadores[pilaOperadores.Tope];
+          pilaNumeros.push(topeActual);
+          pilaOperadores.pop();
+        }
+      }
     }
-    cout<<"pilaNumeros:"<<endl;
+    cout << endl << endl << "postfijo:   ";
     pilaNumeros.imprimir();
-    cout<<endl;
-    cout<<"pilaOperadores:"<<endl;
-    pilaOperadores.imprimir();
-    cout<<endl;
   }
 }
 
@@ -353,12 +365,11 @@ int main(){
   }
   cola cola;
   cola.LeerArchivosEInsertarlosEnLaCola();
+  cout << endl << "Cola:" << endl << endl;
   cola.imprimir();
   pila pilaOperadores;
   pila pilaNumeros;
-  cout<<"Entro a comparar"<<endl;
   cola.CompararExpresiones(pilaNumeros,pilaOperadores);
-
   cin.get();
   return 0;
 }
