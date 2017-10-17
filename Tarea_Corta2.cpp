@@ -26,10 +26,10 @@ nodo(string v, nodo * signodo)
     nodo *anterior;
 
 
-   friend class cola;
    friend class lista;
+   friend class pila;
+   friend class cola;
 };
-
 typedef nodo *pnodo;
 
 class NodoBinario {
@@ -60,15 +60,13 @@ public:
 	~lista();
 
 	void InsertarFinal(string v);
-	void EliminarFinal();
+  int largoLista();
 	bool ListaVacia() { return primero == NULL; }
 	void Mostrar();
 	void BorrarFinal();
-	int largoLista();
-	void Buscar(string num);
-	void limpiar();
+	void vaciar();
 
-private:
+protected:
 	pnodo primero;
 	pnodo actual;
 };
@@ -124,6 +122,7 @@ void lista::BorrarFinal()
 		}
 	}
 }
+
 int lista::largoLista() {
 	int cont = 0;
 
@@ -142,7 +141,6 @@ int lista::largoLista() {
 
 }
 
-
 void lista::Mostrar()
 {
 	nodo *aux;
@@ -154,53 +152,52 @@ void lista::Mostrar()
 	}
 	cout << endl;
 }
-void lista::Buscar(string num)
-{
-	pnodo aux = primero;
-	bool flag = false;
-	string n1;
-	while (aux->siguiente != NULL) {
-		n1 = aux->valor;
-		if (n1 == num) {
-			cout << "El numero " << num << " esta en la lista" << endl;
-			flag = true;
-		}
-		aux = aux->siguiente;
-	}
-	if (flag == false) {
-		cout << "El numero " << num << " no esta en la lista" << endl;
-	}
+
+void lista::vaciar(){
+  while (ListaVacia() == false)
+    BorrarFinal();
 }
 
-
-
-
-class pila{
-public:
-  int Tope;
-  pNodoBinario Pila[30];
-public:
-
-    pila(){
-    Tope = -1;
-    for (int i = 0; i<30 ; i++){
-      Pila[i] = new NodoBinario("");
-      }
-    }
-
-    bool pilaVacia(){return Tope < 0;}
-    void push (string v);
-    void pop ();
-    void imprimir ();
+class pila : public lista{
+  public:
+    pnodo Tope;
+  public:
+    pila() {Tope = NULL;}
+    void push(string v);
+    void pop();
+    bool pilaVacia();
+    void imprimir();
     void vaciarPila();
-    void CrearArbol(pila &postfijo);
-    pNodoBinario operator[](int Tope){//metodo que define lo que hace el operador "[]",
-    // el metodo tuvo que implementarse porque pilaOperadores.Tope no servia.
-      return Pila[Tope];
-    }
+};
 
-    friend class cola;
-  };
+void pila::push (string v){
+  InsertarFinal(v);
+  if (Tope == NULL)
+    Tope = primero;
+  else{
+    Tope = Tope->siguiente;
+  }
+}
+
+void pila::pop (){
+  BorrarFinal();
+  Tope = primero;
+  while (Tope->siguiente != NULL)
+    Tope = Tope->siguiente;
+}
+
+bool pila::pilaVacia (){
+  return ListaVacia();
+}
+
+void pila::imprimir (){
+  Mostrar();
+}
+
+void pila::vaciarPila (){
+  vaciar();
+  Tope = NULL;
+}
 
 class cola{
   private:
@@ -277,39 +274,6 @@ void cola::IngresarExpresion(string expresion){
     aux = aux->siguiente;
   }
 }
-
-  void pila::push (string v)
-  {
-    if (Tope < (30-1))
-    {
-      Tope++;
-      Pila[Tope]->valor = v;
-    }
-    else
-      cout << "La pila esta llena" << endl;
-  }
-  void pila::pop (){
-    if (!pilaVacia()){
-      Tope--;
-    }
-    else{
-      cout << "La pila esta vacia" << endl;
-    }
-  }
-
-  void pila::imprimir()
-  {
-    for (int i = Tope; i >= 0; i--)
-    {
-      cout << Pila[i]->valor << "->";
-    }
-  }
-
-  void pila::vaciarPila(){
-    while (pilaVacia() == false){
-      pop();
-    }
-  }
 
 string InputExpresion(){//pide el input de la expresion y verifica que no tenga letras
   string insertar;
