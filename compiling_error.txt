@@ -1,0 +1,4 @@
+C:\Users\Equipo\Documents\GitHub\Tarea-Corta-2\Tarea_Corta2.cpp: In function 'double evaluar(NodoBinario*)':
+C:\Users\Equipo\Documents\GitHub\Tarea-Corta-2\Tarea_Corta2.cpp:419:19: error: 'std::__cxx11::string {aka class std::__cxx11::basic_string<char>}' has no member named 'isdigit'
+   while(!R->valor.isdigit() ){
+                   ^~~~~~~
