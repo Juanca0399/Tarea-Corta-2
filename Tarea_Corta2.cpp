@@ -112,31 +112,32 @@ pNodoBinario lista::Extraer(){
   return temp;
 }
 
+
 void lista::BorrarFinal()
 {
-    if (ListaVacia()) {
-        cout << "No hay elementos en la lista:" << endl;
+	if (ListaVacia()) {
+		cout << "No hay elementos en la lista:" << endl;
 
-    }
-    else {
-        if (primero->siguiente == NULL) {
-            primero = NULL;
-        }
-        else {
+	}
+	else {
+		if (primero->siguiente == NULL) {
+			primero = NULL;
+		}
+		else {
 
-            pNodoBinario aux = primero;
-            while (aux->siguiente->siguiente != NULL) {
-                aux = aux->siguiente;
+			pNodoBinario aux = primero;
+			while (aux->siguiente->siguiente != NULL) {
+				aux = aux->siguiente;
 
-            }
+			}
 
-            pNodoBinario temp = aux->siguiente;
-            aux->siguiente = NULL;
+			pNodoBinario temp = aux->siguiente;
+			aux->siguiente = NULL;
 
 
-            delete temp;
-        }
-    }
+			delete temp;
+		}
+	}
 }
 
 int lista::largoLista() {
@@ -447,9 +448,10 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
               pilaNumeros.Tope->Hder = x1;
               pilaNumeros.Tope->Hizq = x2;
               pilaOperadores.pop();*/
+              pilaOperadores.pop();
             }
-            pilaOperadores.pop();
             cout<<"paso"<<endl;
+            pilaOperadores.pop();
           }
           else{
             //Se sacan las prioridades dentro y fuera de la pila
