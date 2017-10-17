@@ -26,9 +26,9 @@ nodo(string v, nodo * signodo)
     nodo *anterior;
 
 
-   friend class lista;
    friend class pila;
    friend class cola;
+   friend class lista;
 };
 typedef nodo *pnodo;
 
@@ -48,6 +48,7 @@ class NodoBinario {
     friend class pila;
     friend class Binario;
     friend class cola;
+    friend class lista;
 
     void InsertaBinario(string str);
 };
@@ -67,13 +68,13 @@ public:
 	void vaciar();
 
 protected:
-	pnodo primero;
-	pnodo actual;
+	pNodoBinario primero;
+	pNodoBinario actual;
 };
 
 lista::~lista()
 {
-	pnodo aux;
+	pNodoBinario aux;
 
 	while (primero) {
 		aux = primero;
@@ -86,47 +87,47 @@ lista::~lista()
 void lista::InsertarFinal(string v)
 {
 	if (ListaVacia())
-		primero = new nodo(v);
+		primero = new NodoBinario(v);
 	else
 	{
-		pnodo  aux = primero;
+		pNodoBinario aux = primero;
 		while (aux->siguiente != NULL)
 			aux = aux->siguiente;
-		aux->siguiente = new nodo(v);
+		aux->siguiente = new NodoBinario(v);
 	}
 }
 
 void lista::BorrarFinal()
 {
-	if (ListaVacia()) {
-		cout << "No hay elementos en la lista:" << endl;
+    if (ListaVacia()) {
+        cout << "No hay elementos en la lista:" << endl;
 
-	}
-	else {
-		if (primero->siguiente == NULL) {
-			primero = NULL;
-		}
-		else {
+    }
+    else {
+        if (primero->siguiente == NULL) {
+            primero = NULL;
+        }
+        else {
 
-			pnodo aux = primero;
-			while (aux->siguiente->siguiente != NULL) {
-				aux = aux->siguiente;
+            pNodoBinario aux = primero;
+            while (aux->siguiente->siguiente != NULL) {
+                aux = aux->siguiente;
 
-			}
+            }
 
-			pnodo temp = aux->siguiente;
-			aux->siguiente = NULL;
+            pNodoBinario temp = aux->siguiente;
+            aux->siguiente = NULL;
 
 
-			delete temp;
-		}
-	}
+            delete temp;
+        }
+    }
 }
 
 int lista::largoLista() {
 	int cont = 0;
 
-	pnodo aux;
+	pNodoBinario aux;
 	aux = primero;
 	if (ListaVacia()) {
 		return cont;
@@ -143,7 +144,7 @@ int lista::largoLista() {
 
 void lista::Mostrar()
 {
-	nodo *aux;
+	NodoBinario *aux;
 
 	aux = primero;
 	while (aux!=NULL) {
@@ -160,7 +161,7 @@ void lista::vaciar(){
 
 class pila : public lista{
   public:
-    pnodo Tope;
+    pNodoBinario Tope;
   public:
     pila() {Tope = NULL;}
     void push(string v);
@@ -398,40 +399,41 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
         else{
           if (aux->valor == ")"){
             //SI el operador es ")" entonces saca todos los operadores y los inserta en pilaNumeros hasta entontrar "(" y luego lo elimina
-            while(pilaOperadores[pilaOperadores.Tope]->valor != "("){
-              x1 = pilaNumeros[pilaNumeros.Tope];
+            while(pilaOperadores.Tope->valor != "("){
+              cout << pilaNumeros.Tope->valor << endl;
+              x1 = pilaNumeros.Tope;
               pilaNumeros.pop();
-              x2 = pilaNumeros[pilaNumeros.Tope];
+              x2 = pilaNumeros.Tope;
               pilaNumeros.pop();
-              cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
-              topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
+              //cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
+              topeActual = pilaOperadores.Tope->valor;
               pilaNumeros.push(topeActual);
-              pilaNumeros[pilaNumeros.Tope]->Hder = x1;
-              pilaNumeros[pilaNumeros.Tope]->Hizq = x2;
+              pilaNumeros.Tope->Hder = x1;
+              pilaNumeros.Tope->Hizq = x2;
               pilaOperadores.pop();
             }
             pilaOperadores.pop();
           }
           else{
             //Se sacan las prioridades dentro y fuera de la pila
-            PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]->valor);
+            PDP = validarPDP(pilaOperadores.Tope->valor);
             PFP = validarPFP(aux->valor);
             if (PFP > PDP){
             //Si la prioridad fuera de la pila es mayor  que la prioridad dentro de la pila
               pilaOperadores.push(aux->valor);
             }
             else{
-              x1 = pilaNumeros[pilaNumeros.Tope];
+              x1 = pilaNumeros.Tope;
               pilaNumeros.pop();
-              x2 = pilaNumeros[pilaNumeros.Tope];
+              x2 = pilaNumeros.Tope;
               pilaNumeros.pop();
               cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
-              topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
+              topeActual = pilaOperadores.Tope->valor;
               pilaNumeros.push(topeActual);
               pilaOperadores.pop();
               pilaOperadores.push(aux->valor);
-              pilaNumeros[pilaNumeros.Tope]->Hder = x1;
-              pilaNumeros[pilaNumeros.Tope]->Hizq = x2;
+              pilaNumeros.Tope->Hder = x1;
+              pilaNumeros.Tope->Hizq = x2;
             }
           }
         }
@@ -439,15 +441,15 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
       aux = aux->siguiente;
       if (aux == NULL){
         while (pilaOperadores.pilaVacia() == false){
-          x1 = pilaNumeros[pilaNumeros.Tope];
+          x1 = pilaNumeros.Tope;
           pilaNumeros.pop();
-          x2 = pilaNumeros[pilaNumeros.Tope];
+          x2 = pilaNumeros.Tope;
           pilaNumeros.pop();
           cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
-          topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
+          topeActual = pilaOperadores.Tope->valor;
           pilaNumeros.push(topeActual);
-          pilaNumeros[pilaNumeros.Tope]->Hder = x1;
-          pilaNumeros[pilaNumeros.Tope]->Hizq = x2;
+          pilaNumeros.Tope->Hder = x1;
+          pilaNumeros.Tope->Hizq = x2;
           pilaOperadores.pop();
         }
       }
@@ -455,12 +457,12 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
     cout << endl << endl << "postfijo:   ";
     pilaNumeros.imprimir();
     cout<<endl;
-    cout<<"Hizq= "<<pilaNumeros[pilaNumeros.Tope]->Hizq->valor<<endl;
-    cout<<"Hizq= "<<pilaNumeros[pilaNumeros.Tope]->Hizq->Hizq->valor<<endl;
+    cout<<"Hizq= "<<pilaNumeros.Tope->Hizq->valor<<endl;
+    cout<<"Hizq= "<<pilaNumeros.Tope->Hizq->Hizq->valor<<endl;
 
     cout<<"Recorridos :"<<endl;
     cout<<endl<<"Postorden :  ";
-    PreordenR(pilaNumeros[pilaNumeros.Tope]);
+    PreordenR(pilaNumeros.Tope);
   }
 }
 
