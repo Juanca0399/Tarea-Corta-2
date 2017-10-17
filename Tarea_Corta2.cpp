@@ -64,7 +64,7 @@ public:
   int largoLista();
 	bool ListaVacia() { return primero == NULL; }
 	void Mostrar();
-	void BorrarFinal();
+	pNodoBinario BorrarFinal();
 	void vaciar();
 
 protected:
@@ -97,7 +97,7 @@ void lista::InsertarFinal(string v)
 	}
 }
 
-void lista::BorrarFinal()
+pNodoBinario lista::BorrarFinal()
 {
     if (ListaVacia()) {
         cout << "No hay elementos en la lista:" << endl;
@@ -119,7 +119,7 @@ void lista::BorrarFinal()
             aux->siguiente = NULL;
 
 
-            delete temp;
+            return temp;
         }
     }
 }
@@ -165,7 +165,7 @@ class pila : public lista{
   public:
     pila() {Tope = NULL;}
     void push(string v);
-    void pop();
+    pNodoBinario pop();
     bool pilaVacia();
     void imprimir();
     void vaciarPila();
@@ -180,12 +180,13 @@ void pila::push (string v){
   }
 }
 
-void pila::pop (){
-  BorrarFinal();
+pNodoBinario pila::pop (){
+  pNodoBinario aux = BorrarFinal();
   Tope = primero;
   while (Tope->siguiente != NULL)
     Tope = Tope->siguiente;
   cout << "pene   " << Tope->valor << endl;
+  return aux;
 }
 
 bool pila::pilaVacia (){
@@ -403,13 +404,13 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
             while(pilaOperadores.Tope->valor != "("){
               topeActual = pilaOperadores.Tope->valor;
               pNodoBinario newNode = new NodoBinario (topeActual);
-              x1 = pilaNumeros.Tope;
+              x1 = pilaNumeros.pop();
               newNode->Hder = x1;
-              pilaNumeros.pop();
-              x2 = pilaNumeros.Tope;
-              pilaNumeros.pop();
+              cout<<"x1  = "<<x1->valor<<endl;
+              x2 = pilaNumeros.pop();
               //cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
               newNode->Hizq = x2;
+              cout<<"x2 = "<<x2->valor<<endl;
               pilaNumeros.Tope = newNode;
               pilaOperadores.pop();
               /*x1 = pilaNumeros.Tope;
