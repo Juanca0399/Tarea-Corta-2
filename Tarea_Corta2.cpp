@@ -185,6 +185,7 @@ void pila::pop (){
   Tope = primero;
   while (Tope->siguiente != NULL)
     Tope = Tope->siguiente;
+  cout << "pene   " << Tope->valor << endl;
 }
 
 bool pila::pilaVacia (){
@@ -400,17 +401,26 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
           if (aux->valor == ")"){
             //SI el operador es ")" entonces saca todos los operadores y los inserta en pilaNumeros hasta entontrar "(" y luego lo elimina
             while(pilaOperadores.Tope->valor != "("){
-              cout << pilaNumeros.Tope->valor << endl;
+              topeActual = pilaOperadores.Tope->valor;
+              pNodoBinario newNode = new NodoBinario (topeActual);
               x1 = pilaNumeros.Tope;
+              newNode->Hder = x1;
               pilaNumeros.pop();
               x2 = pilaNumeros.Tope;
               pilaNumeros.pop();
               //cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
+              newNode->Hizq = x2;
+              pilaNumeros.Tope = newNode;
+              pilaOperadores.pop();
+              /*x1 = pilaNumeros.Tope;
+              pilaNumeros.pop();
+              x2 = pilaNumeros.Tope;
+              pilaNumeros.pop();
               topeActual = pilaOperadores.Tope->valor;
               pilaNumeros.push(topeActual);
               pilaNumeros.Tope->Hder = x1;
               pilaNumeros.Tope->Hizq = x2;
-              pilaOperadores.pop();
+              pilaOperadores.pop();*/
             }
             pilaOperadores.pop();
           }
@@ -423,17 +433,25 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
               pilaOperadores.push(aux->valor);
             }
             else{
+              topeActual = pilaOperadores.Tope->valor;
+              pNodoBinario newNode = new NodoBinario (topeActual);
               x1 = pilaNumeros.Tope;
+              newNode->Hder = x1;
+              pilaNumeros.pop();
+              x2 = pilaNumeros.Tope;
+              //cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
+              newNode->Hizq = x2;
+              pilaNumeros.Tope = newNode;
+              /*x1 = pilaNumeros.Tope;
               pilaNumeros.pop();
               x2 = pilaNumeros.Tope;
               pilaNumeros.pop();
-              cout<<"x1 = "<<x1->valor<<endl<<"x2 = "<<x2->valor<<endl;
               topeActual = pilaOperadores.Tope->valor;
               pilaNumeros.push(topeActual);
               pilaOperadores.pop();
               pilaOperadores.push(aux->valor);
               pilaNumeros.Tope->Hder = x1;
-              pilaNumeros.Tope->Hizq = x2;
+              pilaNumeros.Tope->Hizq = x2;*/
             }
           }
         }
