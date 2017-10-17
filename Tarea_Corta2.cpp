@@ -378,6 +378,8 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
   //Este metodo (aun no terminafo) va a comparar, en todas las expresiones, sus distintas prioridades y las va a insertar en las pilas
   //NOTA: Al inicio del ciclo for se limbian las pilas enconces cuando se quiera insertar cosas a los arboles se tiene que tomar en cuenta eso
   int PDP, PFP;
+  string x1;
+  string x2;
   string topeActual;
   for(int i = frente;i<fondo+1;i++){
     pilaNumeros.vaciarPila();
@@ -397,8 +399,14 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
           if (aux->valor == ")"){
             //SI el operador es ")" entonces saca todos los operadores y los inserta en pilaNumeros hasta entontrar "(" y luego lo elimina
             while(pilaOperadores[pilaOperadores.Tope]->valor != "("){
+              x1 = pilaNumeros[pilaNumeros.Tope]->valor;
+              pilaNumeros.pop();
+              x2 = pilaNumeros[pilaNumeros.Tope]->valor;
+              pilaNumeros.pop();
               topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
               pilaNumeros.push(topeActual);
+              pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x1);
+              pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x2);
               pilaOperadores.pop();
             }
             pilaOperadores.pop();
@@ -407,14 +415,22 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
             //Se sacan las prioridades dentro y fuera de la pila
             PDP = validarPDP(pilaOperadores[pilaOperadores.Tope]->valor);
             PFP = validarPFP(aux->valor);
-            if (PFP > PDP)
+            if (PFP > PDP){
             //Si la prioridad fuera de la pila es mayor  que la prioridad dentro de la pila
+
               pilaOperadores.push(aux->valor);
+            }
             else{
+              x1 = pilaNumeros[pilaNumeros.Tope]->valor;
+              pilaNumeros.pop();
+              x2 = pilaNumeros[pilaNumeros.Tope]->valor;
+              pilaNumeros.pop();
               topeActual = pilaOperadores[pilaOperadores.Tope]->valor;
               pilaNumeros.push(topeActual);
               pilaOperadores.pop();
               pilaOperadores.push(aux->valor);
+              pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x1);
+              pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x2);
             }
           }
         }
@@ -422,8 +438,14 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
       aux = aux->siguiente;
       if (aux == NULL){
         while (pilaOperadores.pilaVacia() == false){
+          x1 = pilaNumeros[pilaNumeros.Tope]->valor;
+          pilaNumeros.pop();
+          x2 = pilaNumeros[pilaNumeros.Tope]->valor;
+          pilaNumeros.pop();
           topeActual = pilaOperadores[pilaOperadores.Tope]->valor;;
           pilaNumeros.push(topeActual);
+          pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x1);
+          pilaNumeros[pilaNumeros.Tope]->Hder = new NodoBinario(x2);
           pilaOperadores.pop();
         }
       }
@@ -433,9 +455,6 @@ void cola::CompararExpresiones(pila &pilaNumeros, pila &pilaOperadores){
   }
 }
 
-void pila::CrearArbol(pila &postfijo){
-  pNodoBinario aux = postfijo[postfijo.Tope];
-}
 
 int main(){
   bool opcionIncorrecta = true;
